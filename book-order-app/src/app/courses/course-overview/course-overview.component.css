@@ -1,0 +1,68 @@
+table {
+
+    /* table-layout:fixed;  */
+    width:100%;
+    color: black;
+}
+td, th {
+   padding: 15px;
+   text-align: left;
+}
+
+.panel-primary > .panel-heading {
+    color: white;
+    border-color: #ddd;
+    background-color: #a10022;
+}
+
+.panel-primary {
+    color: #333;
+    border-color: #ddd;
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+}
+
+/* TODO: Refactor this behavior into a directive */
+.mytooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.mytooltip .mytooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    opacity: .5;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.mytooltip:hover .mytooltiptext {
+    visibility: visible;
+}
+
+input[type=text] {
+    width: 130px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+/* When the input field gets focus, change its width to 100% */
+input[type=text]:focus {
+    width: 100%;
+}
+
+.white-glyph {
+    color: white;
+}

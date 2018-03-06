@@ -1,0 +1,18 @@
+<div id="mySubmitModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Submit Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{getConfirmMessage()}}</h4>
+            </div>
+            <div class="modal-body">
+                <tr><td>{{getContentToDisplay()}}</td></tr>
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success pull-right" data-dismiss="modal" (click)="onConfirmClicked()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>

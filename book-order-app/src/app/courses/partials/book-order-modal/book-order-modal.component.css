@@ -1,0 +1,28 @@
+.labeled-input-alignment{
+    margin-top: 24px;
+}
+
+.small-font {
+    font-size: 8pt;
+}
+
+.scroll-table {
+    overflow-y: auto;
+    clear: both;
+}
+
+.tab-width {
+    width: 50%;
+}
+
+table {
+    
+        /* table-layout:fixed;  */
+        width:100%;
+        color: black;
+    }
+    td, th {
+       padding: 10px;
+       text-align: left;
+       width: 25%;
+    }

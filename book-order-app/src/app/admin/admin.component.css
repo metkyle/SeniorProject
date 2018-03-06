@@ -1,0 +1,74 @@
+table {
+    
+        /* table-layout:fixed;  */
+        width:100%;
+        color: black;
+    }
+    td, th {
+       padding: 10px;
+       text-align: left;
+       width: 25%;
+    }
+    
+    .available-terms {
+        background-color: white;
+        width: 50%;
+    }
+    
+    .goodMargin {
+        margin: 5px;
+    }
+    
+    .left-right-margin {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    
+    td.large-bottom-spacing {
+        padding-bottom: 5em;
+    }
+    
+    .large-table {
+        border-collapse: separate;
+        border-spacing: 0 5em;
+    }
+    
+    tr.spaceUnder>td {
+        padding-bottom: 1em;
+      }
+    
+    .panel-primary > .panel-heading {
+        color: white;
+        border-color: #ddd;
+        background-color: #a10022;
+    }
+    
+    .panel-primary {
+        color: #333;
+        border-color: #ddd;
+    }
+    
+    .header-color {
+        background-color: #f5f5f5;
+    }
+    
+    .hoverable:hover {background-color: #f5f5f5}
+    
+    .white-glyph {
+        color: white;
+        vertical-align: middle;
+    }
+    
+    .small-button {
+        width: 30px;
+        height: 30px;
+    }
+
+    .large-button {
+        width: 45%;
+        margin: 10px;
+    }
+
+    .horizontal-layout {
+        overflow: hidden;
+    }

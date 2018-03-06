@@ -1,0 +1,18 @@
+table {
+
+    /* table-layout:fixed;  */
+    width:100%;
+    color: black;
+}
+td, th {
+   padding: 15px;
+   text-align: center;
+   border-bottom: 1px solid black;
+}
+
+th {
+    background-color:#a10022;
+    color: white;
+}
+
+tr:hover {background-color: #f5f5f5}

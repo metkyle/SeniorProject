@@ -1,0 +1,54 @@
+<div class="modal fade" id="courseAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <h4 *ngIf="instructor" class="modal-title" id="myModalLabel">New course for {{instructor.instructorName}}</h4>
+            </div>
+            <div class="modal-body">
+                <form novalidate [formGroup]="modalForm" (ngSubmit)="submitForm(modalForm)">
+                    <div formGroupName="courseToAdd">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 form-group">
+                                <label for="course">Course Number for {{getInstructorDept(instructor)}}</label>
+                                <input id="courseName" type="text" formControlName="courseName" required class="form-control"  placeholder="121">
+                                <div *ngIf="this.modalForm.get('courseToAdd.courseName').touched && modalForm.get('courseToAdd.courseName').hasError('required')" class="text-danger">
+                                    Course number is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 form-group">
+                                <label for="course">Course Section</label>
+                                <input id="courseSection" type="text" formControlName="courseSection" required class="form-control"  placeholder="Section">
+                                <div *ngIf="this.modalForm.get('courseToAdd.courseSection').touched && modalForm.get('courseToAdd.courseSection').hasError('required')" class="text-danger">
+                                    Course section is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 form-group">
+                                <label for="quarter">Term</label>
+                                <div class="dropdown" dropdown [dropdownToggle]="false">
+                                    <button type="button" class="btn btn-default" dropdown-open value="quarter">
+                                            {{modalForm.value.courseToAdd.courseTerm}} {{modalForm.value.courseToAdd.courseYear}}
+                                    <span class="glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li *ngFor="let term of availableTerms">
+                                            <a (click)="setCourseQuarterAndYear(term.quarter, term.year)">{{term.quarter}} {{term.year}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Course</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,106 @@
+<div class="form-set">
+
+  <!-- TODO refactor out all the <br> -->
+  <div>
+    <h3>
+      Contact Overview
+    </h3>
+    <br />
+    <h3>
+      Please leave any comments or questions
+    </h3>
+    <br /><br />
+  </div>
+  <h3>Please Select E-mail Recipient(s)</h3>
+
+  <table class="table table-responsive table-hover">
+    <div id="accordion" class="panel-group">
+      <div class="panel panel-primary" *ngIf="allInstructors.length > 0">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a href="#panel1" data-toggle="collapse" data-parent="#accordion" (click)="fillInstructors()">
+              Admins
+              <span class="glyphicon glyphicon-menu-down pull-right" aria-hidden="true" (click)="fillInstructors()"></span>
+            </a>
+          </h4>
+        </div>
+        <div id="panel1" class="panel-collapse collapse">
+          <div class="panel-body">
+            <table>
+              <tr>
+                <th>NAME</th>
+                <th class="status-cell">ADD TO RECIPIENTS</th>
+              </tr>
+            <tr class="list-group list-group-flush" *ngFor="let admin of adminCheckbox">
+              <td><li class="list-group">{{admin.name}}</li></td>
+              <td class="status-cell"> <input type="checkbox" [(ngModel)]="admin.checked" (change)="appendAdminToRecip()"/></td>
+              
+              
+            </tr>
+            <tr class="list-group list-group-flush">
+              <td> <li class="list-group">All Admins</li></td>
+              
+              <td class="status-cell"><input type="checkbox" [(ngModel)]="allAdminIsChecked" (change)="selectAllAdmin()"/></td>
+            </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      <div class="panel panel-primary" *ngIf="allInstructors.length > 0">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a href="#panel2" data-toggle="collapse" data-parent="#accordion" (click)="fillInstructors()">
+              Instructors
+              <span class="glyphicon glyphicon-menu-down pull-right" aria-hidden="true" (click)="fillInstructors()"></span>
+            </a>
+          </h4>
+        </div>
+        <div id="panel2" class="panel-collapse collapse">
+          <div class="panel-body">
+            <table>
+              <tr>
+                <th>NAME</th>
+                <th>STATUS</th>
+                <th class="status-cell">ADD TO RECIPIENTS</th>
+              </tr>
+              <tr class="list-group list-group-flush" *ngFor="let instructor of instCheckbox">
+                <td>
+                  <li class="list-group">{{instructor.name}} </li>
+                </td>
+                <td>
+                  <span *ngIf="getInstructorByName(instructor.name)" class="label label-success ">
+                    Submitted 
+                  </span>
+                  <span *ngIf="!getInstructorByName(instructor.name)" class="label label-warning">
+                    In Progress 
+                  </span>
+                </td>
+                <td class="status-cell">
+                  <input type="checkbox" id="checkbox{{instructor.name}}" [(ngModel)]="instructor.checked" (change)="appendToRecip()" />
+                </td>
+              </tr>
+              <tr class="list-group list-group-flush">
+                <td><li class="list-group">All Instructors</li></td>
+                <td></td>
+                <td class="status-cell"><input type="checkbox" id="allFacultyCheckbox" [(ngModel)]="allFacultyIsChecked" (change)="selectAllFaculty()" /></td>
+                
+              </tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      </div>
+    </table>
+            
+        <div class="form-group">
+           
+          To: <input type="text" class="form-control" value={{emailTo}} [(ngModel)]="emailTo">
+          
+          Subject: <input type="text" class="form-control" id="emailSubject" [(ngModel)]="emailSubject" /><br />
+          Body: <textarea class="form-control" cols="100" name="contactTextArea" [(ngModel)]="emailBody" rows="10"></textarea><br />
+         
+          <input type="button" (click)="submitEmail()" value="Send" class="btn btn-primary" id="contact-submit" />
+          <input type="button" (click)="clearEmailFields()" value="Clear" class="btn btn-primary" id="clearBtn" />
+
+        </div>

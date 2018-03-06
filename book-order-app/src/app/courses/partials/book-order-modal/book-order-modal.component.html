@@ -1,0 +1,93 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <h4 *ngIf="!editing()" class="modal-title" id="myModalLabel">Add Book</h4>
+                <h4 *ngIf="editing()" class="modal-title" id="myModalLabel">Edit Book</h4>
+            </div>
+            <div class="modal-body">
+                    <ul class="nav nav-tabs" id="tabContent">
+                            <li class="active tab-width"><a href="#new-book" data-toggle="tab">New Book</a></li>
+                            <li class="tab-width"><a href="#previous-book" data-toggle="tab">Previous Book</a></li>
+                    </ul>
+                      
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="new-book">
+                                    <form novalidate [formGroup]="modalForm" (ngSubmit)="submitForm(modalForm)">
+                                            <div formGroupName="bookToAdd">
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-4 form-group">
+                                                        <label for="bookTitle">Book title</label>
+                                                        <input id="bookTitle" type="text" formControlName="bookTitle" required class="form-control"  placeholder="Book Title">
+                                                        <div *ngIf="this.modalForm.get('bookToAdd.bookTitle').touched && modalForm.get('bookToAdd.bookTitle').hasError('required')" class="text-danger">
+                                                            Book title is required.
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-4 form-group">
+                                                        <label for="isbn">ISBN-13</label>
+                                                        <input id="isbn" type="text" formControlName="bookISBN" required class="form-control" placeholder="ISBN-13">
+                                                        <div *ngIf="this.modalForm.get('bookToAdd.bookISBN').touched && modalForm.get('bookToAdd.bookISBN').hasError('required')" class="text-danger">
+                                                            ISBN-13 is required.
+                                                        </div>
+                                                        <div *ngIf="this.modalForm.get('bookToAdd.bookISBN').touched && modalForm.get('bookToAdd.bookISBN').hasError('pattern')" class="text-danger">
+                                                            Invalid ISBN-13 entered.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-4 form-group">
+                                                        <label for="author">Authors (Comma Separated)</label>
+                                                        <input id="author" type="text" formControlName="bookAuthors" class="form-control" placeholder="Author1, Author2">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-4 form-group">
+                                                        <label for="bookPublisher">Book publisher</label>
+                                                        <input id="bookPublisher" type="text" formControlName="bookPublisher" class="form-control" placeholder="Publisher">
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-4 form-group">
+                                                        <label for="edition">Edition</label>
+                                                        <input id="edition" type="text" formControlName="bookEdition" class="form-control" placeholder="Edition">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button *ngIf="!editing()" type="submit" class="btn btn-primary">Add selected books</button>
+                                                <button *ngIf="editing()" type="submit" class="btn btn-warning">Submit Changes</button>
+                                            </div>
+                                        </form>
+                          </div>
+                            
+                            <div class="tab-pane" id="previous-book">
+                                    <div>
+                                        <table class="scroll-table">
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>ISBN-13</th>
+                                                <th>Author</th>
+                                                <th>Edition</th>
+                                            </tr>
+                                            <tr *ngIf="previousBooks.length === 0">
+                                                No previous books
+                                            </tr>
+                                            <tr *ngFor="let book of previousBooks">
+                                                <td>{{book.bookTitle}}</td>
+                                                <td>{{book.bookISBN}}</td>
+                                                <td>{{book.bookAuthors}}</td>
+                                                <td>{{book.bookEdition}}</td>
+                                                <td>
+                                                    <button [disabled]="isDuplicateBook(book.bookISBN)" class="btn btn-primary"
+                                                            (click)="addBook(book)">Add</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                            </div>  
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

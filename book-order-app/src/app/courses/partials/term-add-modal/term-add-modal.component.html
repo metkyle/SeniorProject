@@ -1,0 +1,55 @@
+<div class="modal fade" id="termAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">New Term</h4>
+          </div>
+          <div class="modal-body">
+              <form novalidate [formGroup]="modalForm" (ngSubmit)="submitForm(modalForm)">
+                  <div formGroupName="termToAdd">
+                      <div class="row">
+                          <div class="col-xs-12 col-sm-4 form-group">
+                              <label for="quarter">Quarter</label>
+                              <div class="dropdown" dropdown [dropdownToggle]="false">
+                                  <button type="button" class="btn btn-default" dropdown-open value="quarter">
+                                      {{quarter}}
+                                      <!-- <input id="quarter" type="hidden" formControlName="quarter" required class="form-control" placeholder="Quarter" value="{{quarter}}"> -->
+                                    <span class="glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>
+                                  </button>
+                                  <ul class="dropdown-menu">
+                                      <li><a (click)="selectQuarter('Fall')">Fall</a></li>
+                                      <li><a (click)="selectQuarter('Winter')">Winter</a></li>
+                                      <li><a (click)="selectQuarter('Spring')">Spring</a></li>
+                                      <li><a (click)="selectQuarter('Summer')">Summer</a></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="row">
+                          <div class="col-xs-12 col-sm-4 form-group">
+                              <label for="quarter">Year</label>
+                              <div class="dropdown" dropdown [dropdownToggle]="false">
+                                  <button type="button" class="btn btn-default" dropdown-open>
+                                      {{year}}
+                                    <!-- <input id="year" type="hidden" formControlName="year" required class="form-control" placeholder="Year" value="{{year}}"> -->
+                                    <span class="glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>
+                                  </button>
+                                  <ul class="dropdown-menu">
+                                      <li *ngFor="let number of numbers"><a (click)="selectYear(number)">{{number}}</a></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Add Term</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>

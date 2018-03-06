@@ -1,0 +1,37 @@
+<div class="form-set">
+    <h3>
+      <!--CHANGE THIS ONCE SSO IS UP-->
+     User's Dashboard 
+    </h3>
+  <div class="container-fluid">
+    <table class="table table-responsive table-hover">
+      <tr>
+        <th>COURSE INSTRUCTOR</th>
+        <th>COURSE NAME</th>
+        <th>DEPARTMENT</th>
+        <th>SECTION</th>
+        <th>NUMBER OF BOOKS</th>
+        <th>COMPLETED?</th>
+
+      </tr>
+        <tr *ngFor="let course of coursesAvailable; let i = index">
+
+                
+                <td>{{course.instructor}}</td>
+                <td><a href="course-overview">{{course.name}}</a></td>
+                <td>{{course.department}}</td>
+                <td>{{course.section}}</td>
+                <td>{{course.bookArray.length}}</td>
+                <td><span *ngIf="course.isSubmitted" class="label label-success">
+                     Submitted
+                     </span>
+                     <span *ngIf="!course.isSubmitted" class="label label-warning">
+                     In Progress
+                     </span></td>
+
+
+          </tr>
+
+      </table>
+  </div>
+</div>

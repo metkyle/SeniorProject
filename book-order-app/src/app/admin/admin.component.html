@@ -1,0 +1,177 @@
+<div>
+    <h3>
+      Admin
+    </h3>
+    <h4>Available Terms
+      <button class="btn btn-primary left-right-margin" data-toggle="modal" data-target="#termAddModal">
+              Add Term
+      </button>
+    </h4>
+    <div class="horizontal-layout">
+        <div *ngIf="currentTerms != null && currentTerms.length > 0" class="available-terms" style="float: left;">
+            <table>
+            <tr>
+                <th>Quarter</th>
+                <th>Year</th>
+                <th>Delete</th>
+            </tr>
+            <tr *ngFor="let term of currentTerms">
+                <td>{{term.quarter}}</td>
+                <td>{{term.year}}</td>
+                <td><button class="btn btn-danger left-right-margin" data-toggle="modal" data-target="#mySubmitModal"
+                            (click)="setTermToDelete(term);
+                                    setModalState('deleteTerm')">
+                        <span class="glyphicon glyphicon-trash white-glyph"></span>
+                    </button>
+                </td>
+            </tr>
+            </table>
+        </div>
+        <div>
+            <button class="btn btn-success large-button" (click)="confirmChanges()">Confirm Changes</button>
+            <button class="btn btn-primary large-button">Generate Report</button>
+        </div>
+    </div>
+    <div class="container-fluid">
+      <h4 *ngIf="!departmentInstructors">No instructors found</h4>
+      <h4 *ngIf="departmentInstructors">Review and modify books</h4>
+        <table class="table table-responsive table-hover">
+            <div id="accordion" class="panel-group">
+                <div class="panel panel-primary" *ngFor="let instructor of departmentInstructors; let i = index">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a href="#panel{{i}}" data-toggle="collapse" data-parent="#accordion">
+                               {{instructor.instructorName}}
+                            </a>
+                            <span *ngIf="instructorHasSubmittedAllCourses(instructor)" class="label label-success pull-right">
+                                Submitted {{stringifySubmittedCoursesForInstructor(instructor)}}
+                            </span>
+                            <span *ngIf="!instructorHasSubmittedAllCourses(instructor) && instructor.instructorCourses.length != 0" class="label label-default pull-right">
+                                In Progress {{stringifySubmittedCoursesForInstructor(instructor)}}
+                            </span>
+                            <span *ngIf="instructor.instructorCourses.length == 0" class="label label-default pull-right">
+                                No Courses
+                            </span>
+                        </h4>
+                    </div>
+                    <div id="panel{{i}}" class="panel-collapse collapse">
+                        <table>
+                              <tr>
+                                  <div *ngFor="let course of instructor.instructorCourses; let j = index">
+                                      <h2 class="goodMargin">
+                                          {{stringifyCourseInfo(course)}}
+                                          <button class="btn btn-danger pull-right left-right-margin" data-toggle="modal" data-target="#mySubmitModal"
+                                          (click)="setCurrentInstructor(instructor);
+                                                   setCurrentCourse(course);
+                                                   setModalState('deleteCourse')"
+                                          [disabled]="course.isSubmitted">
+                                                      <span class="glyphicon glyphicon-trash white-glyph"></span>
+                                          </button>
+                                          <bSwitch
+                                          class="pull-right left-right-margin"
+                                          [switch-label-width]="40"
+                                          [switch-handle-width]="150"
+                                          [switch-off-text]="'In Progress'"
+                                          [switch-on-text]="'Submitted'"
+                                          [switch-on-color]="'success'"
+                                          [switch-off-color]="'warning'"
+                                          [switch-animate]="'true'"
+                                          [switch-size]="'large'"
+                                          [switch-disabled]="canSubmit(course)"
+                                          [(ngModel)]="course.isSubmitted">
+                                          </bSwitch>
+                                      </h2>
+                                      <table *ngIf="!noBookRequired(course) && course != null && course.bookArray.length > 0">
+                                          <tr>
+                                              <th>Book Title</th>
+                                              <th>ISBN</th>
+                                              <th>Required</th>
+                                          </tr>
+                                          <tr *ngFor="let book of course.bookArray; let k = index">   
+                                              <td>{{book.bookTitle}}</td>
+                                              <td>{{book.bookISBN}}</td>
+                                              <td>
+                                                  <bSwitch
+                                                  [switch-label-width]="20"
+                                                  [switch-handle-width]="80"
+                                                  [switch-off-text]="'Optional'"
+                                                  [switch-on-text]="'Required'"
+                                                  [switch-on-color]="'danger'"
+                                                  [switch-off-color]="'warning'"
+                                                  [switch-animate]="'true'"
+                                                  [switch-size]="'small'"
+                                                  [switch-disabled]="course.isSubmitted"
+                                                  [(ngModel)]="book.bookRequired"
+                                                  >
+                                                  </bSwitch>
+                                              </td>
+                                              <td>
+                                                  <button class="btn btn-danger pull-right" data-toggle="modal" data-target="#mySubmitModal"
+                                                  (click)="setCurrentInstructor(instructor);
+                                                              setCurrentCourse(course);
+                                                              setCurrentBook(book);
+                                                              setModalState('deleteBook')"
+                                                  [disabled]="course.isSubmitted">
+                                                              <span class="glyphicon glyphicon-trash white-glyph"></span>
+                                                  </button>
+                                                  <button class="btn btn-warning pull-right" data-toggle="modal" data-target="#myModal"
+                                                  (click)="setCurrentInstructor(instructor);
+                                                           setCurrentCourse(course);
+                                                           setCurrentBook(book);
+                                                           setModalState('editState')"
+                                                  [disabled]="course.isSubmitted">
+                                                           <span class="glyphicon glyphicon-pencil white-glyph"></span>
+                                                  </button>
+                                              </td>
+                                          </tr>
+                                      </table>
+                                      <!-- <h4 *ngIf="!noBookRequired(course) && course.bookArray.length == 0" class="goodMargin">No books to show!</h4>
+                                      <h4 *ngIf="noBookRequired(course)" class="goodMargin">This course does not require a book</h4> -->
+                                      <h4 *ngIf="noBookRequired(course) || course.bookArray.length == 0" class="goodMargin">{{getBookStatusMessage(course)}}</h4>
+                                      <div>
+                                          <button class="btn btn-primary goodMargin" data-toggle="modal" data-target="#myModal"
+                                          (click)="setModalState('addState');
+                                                   setCurrentInstructor(instructor);
+                                                   setCurrentCourse(course);
+                                                   setCurrentBook(null);
+                                                   getPreviousBooks()"
+                                          [disabled]="course.isSubmitted">Add New Book</button>
+                                          <mat-checkbox
+                                          [color]="'accent'"
+                                          [checked]="noBookRequired(course)"
+                                          [disabled]="course.isSubmitted"
+                                          (change)="noBookRequiredChecked(course)">
+                                              No Book
+                                          </mat-checkbox>
+                                      </div>
+                                  </div>
+                              </tr>
+                        </table>
+                        <button class="btn btn-success goodMargin" data-toggle="modal" data-target="#courseAddModal"
+                        (click)="setCurrentInstructor(instructor)">New Course for {{instructor.instructorName}}</button>
+                    </div>
+                </div>
+            </div>
+        </table>
+    </div>
+  </div>
+  
+  <app-book-order-modal [coursesAvailable]="coursesAvailable"
+                        [courseId]="courseId"
+                        [bookToAdd]="currentBook"
+                        [modalState]="modalState"
+                        [previousBooks]="previousBooks"></app-book-order-modal>
+  <app-course-confirmation-modal [modalState]="modalState"
+
+                                 [coursesAvailable]="coursesAvailable"
+                                 [courseId]="courseId"
+                                 [bookToDelete]="currentBook"
+                                 
+                                 [courseToDelete]="currentCourse"
+                                 [currentInstructor]="currentInstructor"
+
+                                 [termToDelete]="termToDelete"
+                                 [availableTerms]="currentTerms"></app-course-confirmation-modal>
+  <app-course-add-modal [instructor]="currentInstructor"
+                        [availableTerms]="currentTerms"></app-course-add-modal>
+  <app-term-add-modal [currentTerms]="currentTerms"></app-term-add-modal>

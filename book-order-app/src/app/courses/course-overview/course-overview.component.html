@@ -1,0 +1,120 @@
+<div>
+    <h3>
+      Course-overview
+    </h3>
+    <div class="container-fluid">
+      <div *ngIf="!coursesAvailable">
+          No courses were found!
+      </div>
+        <table class="table table-responsive table-hover">
+            <div id="accordion" class="panel-group">
+                <div class="panel panel-primary" *ngFor="let course of coursesAvailable; let i = index">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a href="#panel{{i}}" data-toggle="collapse" data-parent="#accordion">
+                                {{course.department}} {{course.name}}
+                            </a>
+                              <span *ngIf="course.isSubmitted" class="label label-success pull-right">
+                                Submitted
+                                </span>
+                              <span *ngIf="!course.isSubmitted" class="label label-warning pull-right">
+                                In Progress
+                                </span>
+                        </h4>
+                    </div>
+                    <div id="panel{{i}}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <h3>Current Books for {{course.department}} {{course.name}}</h3>
+                            <table>
+                                <th>Book Title</th>
+                                <th>ISBN</th>
+                                <th>Publisher</th>
+                                <th>
+                                <div class="mytooltip">
+                                    Required
+                                    <span class="mytooltiptext">Check if the book IS Required, leave blank if book is Optional</span>
+                                </div>
+                                </th>
+                                <th>
+                                <div class="mytooltip">
+                                    Modify
+                                    <span class="mytooltiptext">Remove or edit book from current course</span>
+
+                                </div>
+                                </th>
+                                <tr *ngFor="let book of course.bookArray">
+                                    <td>{{book.bookTitle}}</td>
+                                    <td>{{book.bookISBN}}</td>
+                                    <td>{{book.bookPublisher}}</td>
+                                    <td>
+                                        <input type="checkbox" id="bookRequiredCheckbox{{i}}-{{j}}">
+                                    <td>
+                                        <button id="editBtn{{course.courseId}}" data-toggle="modal" data-target="#myModal"
+                                        class="btn btn-warning" (click)="setCurrentCourse(course); setCurrentBook(book); setModalState('editState')">
+                                        <span class="glyphicon glyphicon-pencil white-glyph"></span>
+                                    </button>
+                                        <button id="deleteBtn{{course.courseId}}" data-toggle="modal" data-target="#mySubmitModal"
+                                        class="btn btn-danger" (click)="confirmBookDelete(course.courseId, book); setModalState('deleteBook')">
+                                        <span class="glyphicon glyphicon-trash white-glyph"></span>
+                                    </button>
+                                    </td>
+                                </tr>
+                            </table>
+                                <tr>
+                                <td>
+                                    <div class="mytooltip">
+
+                                    <!-- <span class="mytooltiptext">Check if course does not have any books</span> -->
+                                    <mat-checkbox
+                                    [color]="'accent'"
+                                    [checked]="noBookRequired(course)"
+                                    [disabled]="course.isSubmitted"
+                                    (change)="noBookRequiredChecked(course)">
+                                        No Book
+                                    </mat-checkbox>
+                                    <span class="mytooltiptext">Check if course does not have any books</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="mytooltip">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#myModal" (click)="setCourseIdForBookAdd(course.courseId); setModalState('addState')">Add Book</button>
+                                        <span class="mytooltiptext">Add a book to the current course</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="mytooltip">
+                                        <div>
+                                                <button class="btn btn-primary"
+                                                        type="submit"
+                                                        class="btn btn-primary"
+                                                        data-toggle="modal"
+                                                        data-target="#mySubmitModal"
+                                                        [disabled]="cannotSubmit(course)"
+                                                        (click)="setCurrentCourse(course);
+                                                                 setModalState('submitBooks')">
+                                                        Submit Choices
+                                                </button>
+                                                <span class="mytooltiptext">Finalize your book selection for this course</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </table>
+    </div>
+</div>
+
+<app-book-order-modal   [coursesAvailable]="coursesAvailable"
+                        [courseId]="courseIdToAdd"
+                        [bookToAdd]="currentBook"
+                        [modalState]="modalState"
+                        [previousBooks]="previousBooks"></app-book-order-modal>
+<app-course-confirmation-modal  [coursesAvailable]="coursesAvailable"
+                                [courseId]="courseIdToDelete"
+                                [bookToDelete]="bookToDelete"
+                                [modalState]="modalState"
+                                [courseToDelete]="currentCourse"></app-course-confirmation-modal>
